@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: 'home_feed',
+      initialRoute: 'login',
       routes: {
         'splash_screen': (context) => SplashScreen(title: 'Splash'),
         'login': (context) =>  LoginScreen(),
