@@ -1,12 +1,13 @@
-import 'user_data.dart';
-import 'driver_data.dart';
 
 class RatingModel {
   String? uid;
   String? email;
   String? starRating;
+  String? comment;
+  String? driverID;
 
-  RatingModel({this.uid, this.email, this.starRating});
+
+  RatingModel({this.uid, this.email, this.starRating, this.comment, this.driverID});
 
   // receiving data from server
   factory RatingModel.fromMap(map) {
@@ -14,6 +15,8 @@ class RatingModel {
       uid: map['uid'],
       email: map['email'],
       starRating: map['starRating'],
+      comment: map['comment'],
+      driverID: map['driverID'],
     );
   }
 
@@ -23,6 +26,8 @@ class RatingModel {
       'uid': uid,
       'email': email,
       'starRating': starRating,
+      'comment': comment,
+      'driverID': driverID,
     };
   }
 }

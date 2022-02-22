@@ -45,6 +45,9 @@ class _HomeFeedState extends State<HomeFeed> {
         title: const Text('Home'),
         backgroundColor: Colors.transparent,
       ),
+      floatingActionButton:
+      FloatingActionButton(child: const Icon(Icons.edit), onPressed: () {}),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       drawer: Drawer(
         elevation: 20.0,
         child: Column(
@@ -71,9 +74,12 @@ class _HomeFeedState extends State<HomeFeed> {
                 // child: const Text(""),
               ),
             ),
-            const ListTile(
-              title: Text("Rate"),
-              leading: Icon(Icons.inbox),
+            ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, 'rating');
+              },
+              title: const Text("Rate"),
+              leading: const Icon(Icons.rate_review),
             ),
             const Divider(
               height: 0.1,

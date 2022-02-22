@@ -6,6 +6,7 @@ import 'registration_screen.dart';
 import 'splash_screen.dart';
 import 'onboard_screen.dart';
 import 'profile2.dart';
+import 'rating.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
         'profile': (context) => ProfilePage(), //todo:profile2
         'home_feed': (context) => HomeFeed() ,
         'welcome_screen': (context) => OnboardingScreen(),
-        'registration_screen': (context) => RegistrationScreen() },
+        'registration_screen': (context) => RegistrationScreen(),
+        'rating' :(context) =>RatingPage() },
     );
     //   title: 'Email And Password Login',
     //   theme: ThemeData(

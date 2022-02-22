@@ -1,20 +1,22 @@
 class DriverModel {
   String? uid;
+  String? driverID;
   String? email;
-  String? firstName;
-  String? secondName;
+  String? driverfirstName;
+  String? driversecondName;
   String? avgRating;
 
-  DriverModel({this.uid, this.email, this.firstName, this.secondName, this.avgRating});
+  DriverModel({this.uid, this.driverID, this.email, this.driverfirstName, this.driversecondName, this.avgRating});
 
   // receiving data from server
   factory DriverModel.fromMap(map) {
     return DriverModel(
       uid: map['uid'],
       email: map['email'],
-      firstName: map['firstName'],
-      secondName: map['secondName'],
+      driverfirstName: map['firstName'],
+      driversecondName: map['secondName'],
       avgRating: map['avgRating'],
+      driverID: map['driverID'],
     );
   }
 
@@ -22,9 +24,10 @@ class DriverModel {
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
+      'driverID': driverID,
       'email': email,
-      'firstName': firstName,
-      'secondName': secondName,
+      'firstName': driverfirstName,
+      'secondName': driversecondName,
       'avgRating': avgRating,
     };
   }

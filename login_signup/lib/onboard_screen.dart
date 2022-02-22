@@ -128,12 +128,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             ),
                             SizedBox(height: 30.0),
                             Text(
-                              'Live your life smarter\nwith us!',
+                              'Be in the know!',
                               style: kTitleStyle,
                             ),
                             SizedBox(height: 15.0),
                             Text(
-                              'Lorem ipsum dolor sit amet, consect adipiscing elit, sed do eiusmod tempor incididunt ut labore et.',
+                              ' With other users posting updates about the route you are on, you will always be in the know ',
                               style: kSubtitleStyle,
                             ),
                           ],
@@ -160,7 +160,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             ),
                             SizedBox(height: 10.0),
                             Text(
-                              'Lorem ipsum dolor sit amet, consect adipiscing elit, sed do eiusmod tempor incididunt ut labore et.',
+                              ' After each trip, you will be able to rate the driving and give feedback on your experience',
                               style: kSubtitleStyle,
                             ),
                           ],
