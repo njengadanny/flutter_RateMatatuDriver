@@ -1,3 +1,5 @@
+import 'package:login_signup/timeline.dart';
+
 import 'home_feed.dart';
 import 'registration_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,8 +9,7 @@ import 'designs/theme_helper.dart';
 import 'package:flutter/gestures.dart';
 import 'designs/header_widget.dart';
 import 'forgot_password_page.dart';
-
-
+import 'admin.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -22,14 +23,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   double _headerHeight = 250;
 
-
   // editing controller
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   // firebase
   final _auth = FirebaseAuth.instance;
-  
+
   // string for displaying the error Message
   String? errorMessage;
 
@@ -42,17 +42,20 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             Container(
               height: _headerHeight,
-              child: HeaderWidget(_headerHeight, true, Icons.login_rounded), //let's create a common header widget
+              child: HeaderWidget(_headerHeight, true,
+                  Icons.login_rounded), //let's create a common header widget
             ),
             SafeArea(
               child: Container(
                   padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  margin: EdgeInsets.fromLTRB(20, 10, 20, 10),// This will be the login form
+                  margin: EdgeInsets.fromLTRB(
+                      20, 10, 20, 10), // This will be the login form
                   child: Column(
                     children: [
                       const Text(
                         'Hello',
-                        style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 50, fontWeight: FontWeight.bold),
                       ),
                       const Text(
                         'Sign in into your account',
@@ -67,14 +70,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: TextFormField(
                                   autofocus: false,
                                   controller: emailController,
-                                  decoration: ThemeHelper().textInputDecoration('Email', 'Enter your email'),
+                                  decoration: ThemeHelper().textInputDecoration(
+                                      'Email', 'Enter your email'),
                                   keyboardType: TextInputType.emailAddress,
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return ("Please Enter Your Email");
                                     }
                                     // reg expression for email validation
-                                    if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                                    if (!RegExp(
+                                            "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
                                         .hasMatch(value)) {
                                       return ("Please Enter a valid email");
                                     }
@@ -84,14 +89,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                     emailController.text = value!;
                                   },
                                 ),
-                                decoration: ThemeHelper().inputBoxDecorationShaddow(),
+                                decoration:
+                                    ThemeHelper().inputBoxDecorationShaddow(),
                               ),
                               const SizedBox(height: 20.0),
                               Container(
                                 child: TextFormField(
                                   autofocus: false,
                                   controller: passwordController,
-                                  decoration: ThemeHelper().textInputDecoration('Password*', 'Enter your password'),
+                                  decoration: ThemeHelper().textInputDecoration(
+                                      'Password*', 'Enter your password'),
                                   obscureText: true,
                                   validator: (value) {
                                     RegExp regex = new RegExp(r'^.{6,}$');
@@ -106,78 +113,100 @@ class _LoginScreenState extends State<LoginScreen> {
                                     passwordController.text = value!;
                                   },
                                 ),
-                                decoration: ThemeHelper().inputBoxDecorationShaddow(),
+                                decoration:
+                                    ThemeHelper().inputBoxDecorationShaddow(),
                               ),
                               const SizedBox(height: 10.0),
                               Container(
-                                margin: const EdgeInsets.fromLTRB(10,0,10,20),
+                                margin:
+                                    const EdgeInsets.fromLTRB(10, 0, 10, 20),
                                 alignment: Alignment.topRight,
                                 child: GestureDetector(
                                   onTap: () {
-                                    Navigator.push( context, MaterialPageRoute( builder: (context) => const ForgotPasswordPage()), );
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ForgotPasswordPage()),
+                                    );
                                   },
-                                  child: const Text( "Forgot your password?", style: TextStyle( color: Colors.grey, ),
+                                  child: const Text(
+                                    "Forgot your password?",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                    ),
                                   ),
                                 ),
                               ),
                               Container(
-                                decoration: ThemeHelper().buttonBoxDecoration(context),
+                                decoration:
+                                    ThemeHelper().buttonBoxDecoration(context),
                                 child: ElevatedButton(
                                   style: ThemeHelper().buttonStyle(),
                                   child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                                    child: Text('Log In'.toUpperCase(), style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
+                                    padding: const EdgeInsets.fromLTRB(
+                                        40, 10, 40, 10),
+                                    child: Text(
+                                      'Log In'.toUpperCase(),
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
                                   ),
                                   onPressed: () async {
-                                    signIn(emailController.text, passwordController.text);
-                                    // try {
-                                    //   final user = await _auth.signInWithEmailAndPassword(
-                                    //       email: email, password: password);
-                                    //   if (user != null) {
-                                    //     Navigator.pushNamed(context, 'home_feed');
-                                    //   }
-                                    // } catch (e) {
-                                    //   print(e);
-                                    //   Fluttertoast.showToast(
-                                    //       msg: e.toString(),
-                                    //       toastLength: Toast.LENGTH_SHORT,
-                                    //       gravity: ToastGravity.CENTER,
-                                    //       timeInSecForIosWeb: 1,
-                                    //       backgroundColor: Colors.blue,
-                                    //       textColor: Colors.white,
-                                    //       fontSize: 16.0
-                                    //   );
-                                    // }
-                                    //After successful login we will redirect to profile page. Let's create profile page now
-                                    // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                                    signIn(emailController.text,
+                                        passwordController.text);
                                   },
                                 ),
                               ),
                               Container(
-                                margin: EdgeInsets.fromLTRB(10,20,10,20),
+                                margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
                                 //child: Text('Don\'t have an account? Create'),
-                                child: Text.rich(
-                                    TextSpan(
-                                        children: [
-                                          const TextSpan(text: "Don't have an account? "),
-                                          TextSpan(
-                                            text: 'Create',
-                                            recognizer: TapGestureRecognizer()
-                                              ..onTap = (){
-                                                Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationScreen()));
-                                              },
-                                            style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).accentColor),
-                                          ),
-                                        ]
-                                    )
-                                ),
+                                child: 
+                                Text.rich( TextSpan(
+                                  children: [
+                                  TextSpan(
+                                    text: 'Admin login',
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => AdminLogin()));
+                                      },
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).accentColor),
+                                  ),
+                                ])),
+                              ),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                                //child: Text('Don\'t have an account? Create'),
+                                child: Text.rich(TextSpan(children: [
+                                  const TextSpan(
+                                      text: "Don't have an account? "),
+                                  TextSpan(
+                                    text: 'Create',
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    RegistrationScreen()));
+                                      },
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).accentColor),
+                                  ),
+                                ])),
                               ),
                             ],
-                          )
-                      ),
+                          )),
                     ],
-                  )
-              ),
+                  )),
             ),
           ],
         ),
@@ -324,7 +353,7 @@ class _LoginScreenState extends State<LoginScreen> {
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => HomeFeed())),
+                      MaterialPageRoute(builder: (context) => Timeline())),
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {

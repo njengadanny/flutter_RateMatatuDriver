@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:login_signup/login_screen.dart';
 import 'models/user_data.dart';
-import 'home_feed.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -588,7 +587,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     Navigator.pushAndRemoveUntil(
         (context),
-        MaterialPageRoute(builder: (context) => HomeFeed()),
+        MaterialPageRoute(builder: (context) => LoginScreen()),
         (route) => false);
   }
 }

@@ -106,7 +106,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             ),
                             SizedBox(height: 15.0),
                             Text(
-                              'Post updates about your trips.',
+                              'Post updates about your trips and report drivers who do not follow the law.',
                               style: kSubtitleStyle,
                             ),
                           ],

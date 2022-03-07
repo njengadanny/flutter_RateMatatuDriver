@@ -33,17 +33,24 @@ class _HomeFeedState extends State<HomeFeed> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.black),
         leading: null,
         actions: <Widget>[
           IconButton(
               icon: const Icon(Icons.logout_rounded),
+              color: Colors.black,
               onPressed: () {
                 logout(context);
                 //Implement logout functionality
               }),
         ],
-        title: const Text('Home'),
-        backgroundColor: Colors.transparent,
+        title: const Text('Home',
+          style: TextStyle(
+            color: Colors.black,
+          )
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
       ),
       floatingActionButton:
       FloatingActionButton(child: const Icon(Icons.edit), onPressed: () {}),
@@ -76,7 +83,7 @@ class _HomeFeedState extends State<HomeFeed> {
             ),
             ListTile(
               onTap: () {
-                Navigator.pushNamed(context, 'rating');
+                Navigator.pushNamed(context, 'rate_driver');
               },
               title: const Text("Rate"),
               leading: const Icon(Icons.rate_review),
@@ -85,7 +92,7 @@ class _HomeFeedState extends State<HomeFeed> {
               height: 0.1,
             ),
             const ListTile(
-              title: Text("Rate"),
+              title: Text("Rate History"),
               leading: Icon(Icons.inbox),
             ),
             const ListTile(

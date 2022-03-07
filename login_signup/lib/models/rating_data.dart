@@ -1,19 +1,19 @@
 
 class RatingModel {
-  String? uid;
-  String? email;
+  DateTime? dateTime;
+  String? useremail;
   String? starRating;
   String? comment;
   String? driverID;
 
 
-  RatingModel({this.uid, this.email, this.starRating, this.comment, this.driverID});
+  RatingModel({this.dateTime, this.useremail, this.starRating, this.comment, this.driverID});
 
   // receiving data from server
   factory RatingModel.fromMap(map) {
     return RatingModel(
-      uid: map['uid'],
-      email: map['email'],
+      dateTime: map['dateTime'],
+      useremail: map['email'],
       starRating: map['starRating'],
       comment: map['comment'],
       driverID: map['driverID'],
@@ -23,8 +23,8 @@ class RatingModel {
   // sending data to our server
   Map<String, dynamic> toMap() {
     return {
-      'uid': uid,
-      'email': email,
+      'dateTime': dateTime,
+      'useremail': useremail,
       'starRating': starRating,
       'comment': comment,
       'driverID': driverID,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'home_feed.dart';
+import 'timeline.dart';
 import 'models/driver_data.dart';
 import 'models/user_data.dart';
 import 'models/rating_data.dart';
@@ -25,24 +26,32 @@ class _RatingPageState extends State<RatingPage> {
   final _auth = FirebaseAuth.instance;
   String? errorMessage;
 
-  @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(user!.uid)
-        .get()
-        .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   FirebaseFirestore.instance
+  //       .collection("users")
+  //       .doc(user!.uid)
+  //       .get()
+  //       .then((value) {
+  //     this.loggedInUser = UserModel.fromMap(value.data());
+  //     setState(() {});
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Driver Rating'),
+          iconTheme: const IconThemeData(color: Colors.black),
+          title: const Text(
+            'Driver Rating',
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          elevation: 0,
+          backgroundColor: Colors.white,
         ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(25),
@@ -149,25 +158,26 @@ class _RatingPageState extends State<RatingPage> {
 
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
+    // String? id;
 
     // UserModel userModel = UserModel();
     RatingModel ratingModel = RatingModel();
     // DriverModel driverModel = DriverModel();
 
     // writing all the values
-    ratingModel.email = user!.email;
-    ratingModel.uid = user.uid;
+    ratingModel.useremail = user!.email;
+    ratingModel.dateTime = DateTime.now();
     ratingModel.comment = comment.text;
     ratingModel.starRating = _ratingValue.toString();
     ratingModel.driverID = driverID.text;
 
     await firebaseFirestore
         .collection("ratings")
-        .doc(user.uid)
+        .doc()
         .set(ratingModel.toMap());
     Fluttertoast.showToast(msg: "Rating Submitted :) ");
 
     Navigator.pushAndRemoveUntil((context),
-        MaterialPageRoute(builder: (context) => HomeFeed()), (route) => false);
+        MaterialPageRoute(builder: (context) => Timeline()), (route) => false);
   }
 }
