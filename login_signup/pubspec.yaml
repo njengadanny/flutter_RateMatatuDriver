@@ -48,6 +48,7 @@ dependencies:
   unicons: ^2.0.2
   image_cropper: ^1.5.0
   firebase_storage: ^10.2.7
+  multiple_stream_builder: ^1.0.0
 
 dev_dependencies:
   flutter_test:

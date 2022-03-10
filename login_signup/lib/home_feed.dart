@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:login_signup/profile2.dart';
+import 'package:login_signup/rating.dart';
+import 'package:login_signup/timeline.dart';
 import 'models/user_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +19,35 @@ class _HomeFeedState extends State<HomeFeed> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
 
+  int _selectedIndex = 0;
+  // final screens = [
+  //   const HomeFeed(),
+  //   ProfilePage(),
+  //   const RatingPage(),
+  //   ProfilePage(),
+
+  // ];
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static final List<Widget> _widgetOptions = <Widget>[
+    Timeline(),
+    const Text(
+      'Index 1: Search',
+      style: optionStyle,
+    ),
+    const Text(
+      'Index 2: Notifications',
+      style: optionStyle,
+    ),
+    ProfilePage(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -32,58 +64,60 @@ class _HomeFeedState extends State<HomeFeed> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
-        leading: null,
-        actions: <Widget>[
-          IconButton(
-              icon: const Icon(Icons.logout_rounded),
-              color: Colors.black,
-              onPressed: () {
-                logout(context);
-                //Implement logout functionality
-              }),
-        ],
-        title: const Text('Home',
-          style: TextStyle(
-            color: Colors.black,
-          )
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
-      floatingActionButton:
-      FloatingActionButton(child: const Icon(Icons.edit), onPressed: () {}),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      // appBar: AppBar(
+      //   iconTheme: const IconThemeData(color: Colors.black),
+      //   leading: null,
+      //   actions: <Widget>[
+      //     IconButton(
+      //         icon: const Icon(Icons.logout_rounded),
+      //         color: Colors.black,
+      //         onPressed: () {
+      //           logout(context);
+      //           //Implement logout functionality
+      //         }),
+      //   ],
+      //   title: const Text('Home',
+      //       style: TextStyle(
+      //         color: Colors.black,
+      //       )),
+      //   backgroundColor: Colors.white,
+      //   elevation: 0,
+      // ),
+      // floatingActionButton:
+      // FloatingActionButton(child: const Icon(Icons.add), onPressed: () {}),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+
       drawer: Drawer(
         elevation: 20.0,
         child: Column(
-          children:  <Widget>[
+          children: <Widget>[
             UserAccountsDrawerHeader(
               onDetailsPressed: () {
-                Navigator.pushNamed(context, 'profile');
+                Navigator.push(context, MaterialPageRoute(builder: (_) {
+                  return ProfilePage();
+                }));
               },
               accountName: Text("${loggedInUser.firstName} \n View Profile ",
-                    style: const TextStyle(
+                  style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
-                  )
-                ),
+                  )),
               accountEmail: null,
               currentAccountPicture: CircleAvatar(
-                radius: 30.0,
-                // backgroundImage: NetworkImage("assets/images/logo.png"),
-                backgroundColor: Colors.transparent,
-                child: ClipRRect(
-                  borderRadius:BorderRadius.circular(30),
-                  child: Image.asset("assets/images/avatar.png"),
-                )
-                // child: const Text(""),
-              ),
+                  radius: 30.0,
+                  // backgroundImage: NetworkImage("assets/images/logo.png"),
+                  backgroundColor: Colors.transparent,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: Image.asset("assets/images/avatar.png"),
+                  )
+                  // child: const Text(""),
+                  ),
             ),
             ListTile(
               onTap: () {
-                Navigator.pushNamed(context, 'rate_driver');
+                Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return const RatingPage();  }));
               },
               title: const Text("Rate"),
               leading: const Icon(Icons.rate_review),
@@ -107,6 +141,64 @@ class _HomeFeedState extends State<HomeFeed> {
         ),
       ),
 
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+
+      // body: SingleChildScrollView(
+      //   child: _widgetOptions.elementAt(_selectedIndex),
+      //   padding: const EdgeInsets.all(25),
+      //   child: Center(
+      //     child: Column(children: [
+      //       const SizedBox(height: 55),
+      //       TextFormField(
+      //         autofocus: false,
+      //         controller: post,
+      //         decoration: ThemeHelper()
+      //             .textInputDecoration('What is happening? ', 'What is happening?'),
+      //         keyboardType: TextInputType.text,
+      //         onSaved: (value) {
+      //           post.text = value!;
+      //         },
+      //       ),
+      //     ]),
+      //   ),
+      // ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.blueAccent,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+            backgroundColor: Colors.white,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+            // backgroundColor: Colors.green,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: 'Notifications',
+            // backgroundColor: Colors.purple,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+            // backgroundColor: Colors.pink,
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
+        onTap: _onItemTapped,
+
+        //   onTap: (value) {
+        //   if (value == 0) Navigator.of(context).push(...);
+        //   if (value == 1) Navigator.of(context).push(...);
+        //   if (value == 2) Navigator.of(context).push(...);
+        // },
+      ),
       // body: Center(
       //   child: Padding(
       //     padding: const EdgeInsets.all(20),
@@ -138,11 +230,11 @@ class _HomeFeedState extends State<HomeFeed> {
       //         const SizedBox(
       //           height: 15,
       //         ),
-      //         // ActionChip(
-      //         //     label: const Text("Logout"),
-      //         //     onPressed: () {
-      //         //       logout(context);
-      //         //     }),
+      //          ActionChip(
+      //              label: const Text("Logout"),
+      //              onPressed: () {
+      //                logout(context);
+      //              }),
       //       ],
       //     ),
       //   ),

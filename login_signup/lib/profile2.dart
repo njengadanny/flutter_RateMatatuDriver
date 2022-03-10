@@ -34,18 +34,10 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 0,
         backgroundColor: Colors.grey,
-        leading: InkWell(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Icon(
-            Icons.arrow_back_ios_outlined,
-            color: Colors.grey[700],
-            size: 18,
-          ),
-        ),
+        
         actions: <Widget>[
           IconButton(
               icon: const Icon(Icons.logout_rounded),
@@ -203,9 +195,9 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ],
           ),
-          const SizedBox(
-            height: 30,
-          ),
+          // const SizedBox(
+          //   height: 30,
+          // ),
           // Row(
           //   children: [
           //     Padding(
@@ -232,9 +224,9 @@ class _ProfilePageState extends State<ProfilePage> {
           //     ),
           //   ],
           // ),
-          const SizedBox(
-            height: 30,
-          ),
+          // const SizedBox(
+          //   height: 30,
+          // ),
           // Row(
           //   children: [
           //     Padding(
@@ -261,16 +253,16 @@ class _ProfilePageState extends State<ProfilePage> {
           //     ),
           //   ],
           // ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 22.0),
-            child: Divider(),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
+          // const SizedBox(
+          //   height: 20,
+          // ),
+          // const Padding(
+          //   padding: EdgeInsets.symmetric(horizontal: 22.0),
+          //   child: Divider(),
+          // ),
+          // const SizedBox(
+          //   height: 30,
+          // ),
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.start,
           //   children: [
@@ -298,7 +290,7 @@ class _ProfilePageState extends State<ProfilePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 54.0),
+                padding: const EdgeInsets.only(left: 30.0),
                 child: Icon(Icons.mail, color: Colors.grey[500]),
               ),
               Padding(

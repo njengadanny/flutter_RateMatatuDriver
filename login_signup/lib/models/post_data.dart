@@ -1,22 +1,26 @@
 class PostModel {
-  String? postid;
+  String? useremail;
   String? post;
+  DateTime? dateTime;
 
-  PostModel({this.postid, this.post});
+
+  PostModel({this.useremail, this.post, this.dateTime});
 
   // receiving data from server
   factory PostModel.fromMap(map) {
     return PostModel(
-      postid: map['post_id'],
+      useremail: map['email'],
       post: map['post'],
+      dateTime: map['dateTime'],
     );
   }
 
   // sending data to our server
   Map<String, dynamic> toMap() {
     return {
-      'post_id': postid,
+      'useremail': useremail,
       'post': post,
+      'dateTime': dateTime,
     };
   }
 }

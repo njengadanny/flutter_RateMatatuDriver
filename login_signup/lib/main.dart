@@ -24,12 +24,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: 'all_users',
+      initialRoute: 'login',
       routes: {
         'splash_screen': (context) => SplashScreen(title: 'Splash'),
         'login': (context) =>  LoginScreen(),
         'profile': (context) => ProfilePage(), //todo:profile2
-        'home_feed': (context) => Timeline() ,
+        'home_feed': (context) => HomeFeed() ,
         'welcome_screen': (context) => OnboardingScreen(),
         'registration_screen': (context) => RegistrationScreen(),
         'admin':(context) => AdminLogin(),

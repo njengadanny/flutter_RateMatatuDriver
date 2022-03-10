@@ -17,8 +17,8 @@ class _ProfilPageState extends State<ProfilPage> {
       body: Column(
         children: [
           Container(
-            margin: EdgeInsets.only(top: 35),
-            padding: EdgeInsets.symmetric(horizontal: 15),
+            margin: const EdgeInsets.only(top: 35),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -26,15 +26,15 @@ class _ProfilPageState extends State<ProfilPage> {
                     onTap: () {
                       Navigator.of(context).pop();
                     },
-                    child: Icon(Icons.arrow_back_ios)),
-                Icon(Icons.more_vert),
+                    child: const Icon(Icons.arrow_back_ios)),
+                const Icon(Icons.more_vert),
               ],
             ),
           ),
           Hero(
             tag: widget.url,
                       child: Container(
-              margin: EdgeInsets.only(top: 35),
+              margin: const EdgeInsets.only(top: 35),
               height: 80,
               width: 80,
               decoration: BoxDecoration(
@@ -54,12 +54,12 @@ class _ProfilPageState extends State<ProfilPage> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          Text(
+          const Text(
             "Tom Smith",
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -71,7 +71,7 @@ class _ProfilPageState extends State<ProfilPage> {
               color: Colors.grey[400],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Row(
@@ -84,13 +84,13 @@ class _ProfilPageState extends State<ProfilPage> {
           ),
           Expanded(
             child: Container(
-              margin: EdgeInsets.only(left: 8, right: 8, top: 8),
+              margin: const EdgeInsets.only(left: 8, right: 8, top: 8),
               decoration: BoxDecoration(
                   color: Colors.grey.withOpacity(0.15),
                   borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(25))),
+                      const BorderRadius.vertical(top: const Radius.circular(25))),
               child: GridView.count(
-                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
                 crossAxisCount: 2,
                 crossAxisSpacing: 5,
                 mainAxisSpacing: 5,
@@ -120,7 +120,7 @@ class _ProfilPageState extends State<ProfilPage> {
         child: FittedBox(
           child: FloatingActionButton(
             onPressed: () {},
-            child: Icon(
+            child: const Icon(
               Icons.add,
             ),
             backgroundColor: Colors.grey[900],
@@ -194,7 +194,7 @@ class _ProfilPageState extends State<ProfilPage> {
       children: [
         Text(
           value,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),

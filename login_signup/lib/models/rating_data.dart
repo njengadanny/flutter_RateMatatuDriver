@@ -1,4 +1,3 @@
-
 class RatingModel {
   DateTime? dateTime;
   String? useremail;
@@ -6,8 +5,12 @@ class RatingModel {
   String? comment;
   String? driverID;
 
-
-  RatingModel({this.dateTime, this.useremail, this.starRating, this.comment, this.driverID});
+  RatingModel(
+      {this.dateTime,
+      this.useremail,
+      this.starRating,
+      this.comment,
+      this.driverID});
 
   // receiving data from server
   factory RatingModel.fromMap(map) {

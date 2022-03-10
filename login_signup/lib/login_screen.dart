@@ -353,7 +353,7 @@ class _LoginScreenState extends State<LoginScreen> {
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => Timeline())),
+                      MaterialPageRoute(builder: (context) => HomeFeed())),
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {

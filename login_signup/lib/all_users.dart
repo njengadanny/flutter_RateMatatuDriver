@@ -8,6 +8,7 @@ class AllUsers extends StatelessWidget {
   FirebaseAuth auth = FirebaseAuth.instance;
 
   AllUsers({Key? key}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,9 +35,15 @@ class AllUsers extends StatelessWidget {
                   
                     return Card(
                       child: ListTile(
-                        leading: Image.asset("assets/images/avatar.png"),
-                        title: Text("First Name: " + document['firstName']),
-                        subtitle: Text("Email: " + document['email']),
+                        leading: Image.asset("assets/images/avatar.png", width: 60.0,),
+                        title: Column(
+                          children: [
+                            Text("First Name: " + document['firstName'], textAlign: TextAlign.center),
+                            Text("Second Name: " + document['secondName'], textAlign: TextAlign.center),
+                          ],
+                        ),
+                        subtitle: 
+                        Text("Email: " + document['email'], textAlign: TextAlign.center),
                         trailing:  IconButton(
                               onPressed: () async => await FirebaseFirestore.instance.runTransaction((Transaction myTransaction) async {
                               myTransaction.delete(snapshot.data!.docs[index].reference);
