@@ -8,6 +8,7 @@
 .buildlog/
 .history
 .svn/
+/lib/copy_code
 
 # IntelliJ related
 *.iml
@@ -45,4 +46,3 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-/lib/copy_code.dart
