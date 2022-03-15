@@ -32,7 +32,6 @@ class _TimelineState extends State<Timeline> {
   late final post = TextEditingController();
   final postdb = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
-  late UniqueKey index = UniqueKey();
 
   @override
   void initState() {
@@ -104,9 +103,12 @@ class _TimelineState extends State<Timeline> {
               const Divider(
                 height: 0.1,
               ),
-              const ListTile(
-                title: Text("Rate History"),
-                leading: Icon(Icons.inbox),
+              ListTile(
+                onTap: () {
+                  Navigator.pushNamed(context, 'rate_history');
+                },
+                title: const Text("Rate History"),
+                leading: const Icon(Icons.access_time),
               ),
               const ListTile(
                 title: Text("Support"),
@@ -149,8 +151,8 @@ class _TimelineState extends State<Timeline> {
           Flexible(
             child: StreamBuilder<QuerySnapshot>(
               stream: postdb.collection('posts').
-              orderBy('dateTime', descending: false).
-              snapshots(),
+              orderBy('dateTime', descending: false)
+              .snapshots(),
               builder: (context, snapshot) {
                 Container(
                     padding: const EdgeInsets.symmetric(

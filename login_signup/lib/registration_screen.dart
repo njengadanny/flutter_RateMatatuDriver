@@ -17,10 +17,6 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final _auth = FirebaseAuth.instance;
-  // late String lname;
-  // late String fname;
-  // late String email;
-  // late String password;
   bool checkedValue = false;
   bool checkboxValue = false;
 
@@ -252,40 +248,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                             onPressed: () async {
                               signUp(emailEditingController.text, passwordEditingController.text);
-                              // final newUser = <String, dynamic>{
-                              //   'fname': fname,
-                              //   'lname': lname,
-                              //   'email': email,
-                              //   'time': DateTime.now().millisecondsSinceEpoch
-                              // };
-                              // database
-                              // .child('users')
-                              // .push()
-                              // .set(newUser)
-                              // .then((_) => print('new user added'))
-                              // .catchError(
-                              //   (error) => print('this is the error $error')
-                              // );
-                              // if (_formKey.currentState!.validate()) {
-                              //   try {
-                              //     final newUser = await _auth
-                              //         .createUserWithEmailAndPassword(
-                              //             email: email, password: password);
-                              //     if (newUser != null) {
-                              //       Navigator.pushNamed(context, 'login');
-                              //     }
-                              //   } catch (e) {
-                              //     print(e);
-                              //     Fluttertoast.showToast(
-                              //         msg: e.toString(),
-                              //         toastLength: Toast.LENGTH_SHORT,
-                              //         gravity: ToastGravity.CENTER,
-                              //         timeInSecForIosWeb: 1,
-                              //         backgroundColor: Colors.blue,
-                              //         textColor: Colors.white,
-                              //         fontSize: 16.0);
-                              //   }
-                              // }
                             },
                           ),
                         ),

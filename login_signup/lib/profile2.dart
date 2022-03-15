@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:login_signup/profil.dart';
 import 'login_screen.dart';
-
 import 'models/user_data.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'update_profile.dart';
+
 
 class ProfilePage extends StatefulWidget {
    State<StatefulWidget> createState() {
@@ -17,6 +19,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
+  final postdb = FirebaseFirestore.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -34,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        // automaticallyImplyLeading: false,
         elevation: 0,
         backgroundColor: Colors.grey,
         
@@ -48,7 +52,14 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
         title: const Text('Profile',),
       ),
+      floatingActionButton:
+      FloatingActionButton(child: const Icon(Icons.edit), onPressed: () { 
+        Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => UpdateProfile()));
+      }),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       backgroundColor: Colors.white,
+
       body: Column(
         children: [
           // Row(
@@ -352,8 +363,198 @@ class _ProfilePageState extends State<ProfilePage> {
           //     ),
           //   ],
           // ),
+          Flexible(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: postdb.collection('posts')
+              // .orderBy('dateTime', descending: false)
+              .where('useremail',
+              isEqualTo: "${loggedInUser.email}")
+              .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }                 
+                  return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      DocumentSnapshot document = snapshot.data!.docs[index];
+
+                        if (document.id == auth.currentUser!.uid) {
+                          return Container(height: 0);
+                        }                                                
+
+                        return Card(
+                          child: ListTile(
+                            leading: Image.asset("assets/images/avatar.png", width: 60.0,),
+                            title: Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(document['useremail'], textAlign: TextAlign.left)
+                                ),
+                                buildPostSection(document['post']),
+                                // "https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=100&w=940"),
+                              ],
+                            ),
+                            subtitle:
+                                Text(document['dateTime'].toDate().toString()),
+                          ),
+                        );
+                      });
+                
+              },
+            ),
+          ),
         ],
       ),
+    );    
+  }
+  Container buildPostSection(String urlPostText) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+      decoration: BoxDecoration(
+        color: Colors.grey.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // buildPostFirstRow(urlProfilePhoto),
+          // const SizedBox(
+          //   height: 10,
+          // ),
+          // buildPostPicture(urlPost),
+          // const SizedBox(
+          //   height: 5,
+          // ),
+          buildPostText(urlPostText),
+          const SizedBox(
+            height: 5,
+          ),
+          // Text(
+          //   "963 likes",
+          //   style: TextStyle(
+          //       fontSize: 17,
+          //       fontWeight: FontWeight.bold,
+          //       color: Colors.grey[800]),
+          // ),
+          const SizedBox(
+            height: 8,
+          ),
+        ],
+      ),
+    );
+  }
+  
+
+  Row buildPostFirstRow(String urlProfilePhoto) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        ProfilPage(url: urlProfilePhoto)));
+              },              
+                // child: CircleAvatar(
+                //       child: ClipRRect(
+                //     borderRadius: BorderRadius.circular(30),
+                //     child: Image.asset("assets/images/avatar.png"),
+                //   ))
+                child: CircleAvatar(
+                  radius: 12,
+                  backgroundImage: NetworkImage(urlProfilePhoto),
+                ),
+              
+            ),
+            const SizedBox(
+              width: 5,
+            ), 
+          //   Column(
+          //     children: [
+          //   Flexible(
+          //   child: StreamBuilder<QuerySnapshot>(
+          //     stream: postdb.collection('posts').snapshots(),
+          //     builder: (context, snapshot) {                
+          //       if (!snapshot.hasData) {
+          //         return const Center(
+          //           child: CircularProgressIndicator(),
+          //         );
+          //       } else {
+          //         return ListView.builder(
+          //             itemCount: snapshot.data!.docs.length,
+          //             itemBuilder: (context, index) {
+          //               DocumentSnapshot document = snapshot.data!.docs[index];
+
+          //               if (document.id == auth.currentUser!.uid) {
+          //                 return Container(height: 0);
+          //               }
+
+          //               return Card(
+          //                 child: ListTile(
+          //                   title: Column(
+          //                       children: [
+          //                         Text(document['useremail'],
+          //                               textAlign: TextAlign.center
+          //                             ),
+          //                       ],
+          //                     ),
+          //                 ),
+          //               );
+          //             });
+          //       }
+          //     },
+          //   ),
+          // ),
+          // ])
+            // Column(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //     const Text(
+            //       "user1",
+            //       style: TextStyle(
+            //         fontSize: 18,
+            //         fontWeight: FontWeight.bold,
+            //       ),
+            //     ),
+            //     Text(
+            //       "Kenya",
+            //       style: TextStyle(
+            //           fontSize: 12,
+            //           fontWeight: FontWeight.bold,
+            //           color: Colors.grey[500]),
+            //     ),
+            //   ],
+            // )
+          ],
+        ),
+        const Icon(Icons.more_vert)
+      ],
+    );
+  }
+
+  Stack buildPostText(String urlPostText) {
+    return Stack(
+      children: [
+        SizedBox(
+          child: Text(urlPostText),
+          height: MediaQuery.of(context).size.width - 300,
+
+          // Positioned(
+          //   bottom: 20,
+          //   right: 20,
+          //   child: Icon(Icons.favorite,
+          //       size: 35, color: Colors.white.withOpacity(0.7)),
+          // )
+        )
+      ],
     );
   }
   Future<void> logout(BuildContext context) async {

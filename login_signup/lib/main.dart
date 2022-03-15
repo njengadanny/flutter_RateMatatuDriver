@@ -1,4 +1,5 @@
 import 'package:login_signup/dashboard.dart';
+import 'package:login_signup/update_profile.dart';
 import 'login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'rating.dart';
 import 'timeline.dart';
 import 'admin.dart';
 import 'all_users.dart';
+import 'rate_history.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: 'login',
+      initialRoute: 'home_feed',
       routes: {
         'splash_screen': (context) => SplashScreen(title: 'Splash'),
         'login': (context) =>  LoginScreen(),
@@ -35,8 +37,10 @@ class MyApp extends StatelessWidget {
         'admin':(context) => AdminLogin(),
         'dashboard': (context) => Dashboard(),
         'all_users': (context) => AllUsers(),
+        'update' : (context) => UpdateProfile(),
         // 'ratings': (context) = 
-        'rate_driver' :(context) =>RatingPage() },
+        'rate_driver' :(context) =>RatingPage(),
+        'rate_history':(context) => RateHistory() },
     );
     //   title: 'Email And Password Login',
     //   theme: ThemeData(

@@ -5,7 +5,7 @@ import 'package:login_signup/timeline.dart';
 import 'models/user_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'rate_history.dart';
 import 'login_screen.dart';
 
 class HomeFeed extends StatefulWidget {
@@ -125,9 +125,13 @@ class _HomeFeedState extends State<HomeFeed> {
             const Divider(
               height: 0.1,
             ),
-            const ListTile(
-              title: Text("Rate History"),
-              leading: Icon(Icons.inbox),
+            ListTile(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return RateHistory();  }));
+              },
+              title: const Text("Rate History"),
+              leading: const Icon(Icons.access_time),
             ),
             const ListTile(
               title: Text("Support"),
@@ -165,7 +169,7 @@ class _HomeFeedState extends State<HomeFeed> {
       //   ),
       // ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.blueAccent,
+        // backgroundColor: Colors.blueAccent,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -182,11 +186,11 @@ class _HomeFeedState extends State<HomeFeed> {
             label: 'Notifications',
             // backgroundColor: Colors.purple,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-            // backgroundColor: Colors.pink,
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.person),
+          //   label: 'Profile',
+          //   backgroundColor: Colors.pink,
+          // ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.black,
