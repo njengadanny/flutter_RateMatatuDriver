@@ -3,21 +3,30 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:login_signup/models/post_data.dart';
-import 'profil.dart';
-import 'login_screen.dart';
-import 'models/user_data.dart';
-import 'models/post_data.dart';
+import '../profil.dart';
+import '../login_screen.dart';
+import '../models/driver_data.dart';
+import '../models/post_data.dart';
 
-class Timeline extends StatefulWidget {
+class SocialMedia extends StatelessWidget {
   @override
-  _TimelineState createState() => _TimelineState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: DriverTimeline(),
+    );
+  }
 }
 
-class _TimelineState extends State<Timeline> {
-  int _selectedItemIndex = 0;
+class DriverTimeline extends StatefulWidget {
+  @override
+  _DriverTimelineState createState() => _DriverTimelineState();
+}
+
+class _DriverTimelineState extends State<DriverTimeline> {
   User? user = FirebaseAuth.instance.currentUser;
   final _auth = FirebaseAuth.instance;
-  UserModel loggedInUser = UserModel();
+  DriverModel loggedInUser = DriverModel();
   late final post = TextEditingController();
   final postdb = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -26,11 +35,11 @@ class _TimelineState extends State<Timeline> {
   void initState() {
     super.initState();
     FirebaseFirestore.instance
-        .collection("users")
+        .collection("drivers")
         .doc(user!.uid)
         .get()
         .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
+      this.loggedInUser = DriverModel.fromMap(value.data());
       setState(() {});
     });
   }
@@ -63,9 +72,9 @@ class _TimelineState extends State<Timeline> {
             children: <Widget>[
               UserAccountsDrawerHeader(
                 onDetailsPressed: () {
-                  Navigator.pushNamed(context, 'profile');
+                  Navigator.pushNamed(context, 'driver_profile');
                 },
-                accountName: Text("${loggedInUser.firstName} \t\t\tView Profile ",
+                accountName: Text("${loggedInUser.driverfirstName}  View Profile ",
                     style: const TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w500,
@@ -82,22 +91,15 @@ class _TimelineState extends State<Timeline> {
                     // child: const Text(""),
                     ),
               ),
-              ListTile(
-                onTap: () {
-                  Navigator.pushNamed(context, 'rate_driver');
-                },
-                title: const Text("Rate"),
-                leading: const Icon(Icons.rate_review),
-              ),
               const Divider(
                 height: 0.1,
               ),
               ListTile(
                 onTap: () {
-                  Navigator.pushNamed(context, 'rate_history');
+                  Navigator.pushNamed(context, 'driver_reputation');
                 },
-                title: const Text("Rate History"),
-                leading: const Icon(Icons.access_time),
+                title: const Text("Reputation"),
+                leading: const Icon(Icons.star_half_sharp),
               ),
               const ListTile(
                 title: Text("Support"),
@@ -115,7 +117,7 @@ class _TimelineState extends State<Timeline> {
           Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
               child: TextFormField(
-                maxLines: 3,
+                maxLines: 2,
                 keyboardType: TextInputType.multiline,
                 controller: post,
                 decoration: InputDecoration(
@@ -187,7 +189,7 @@ class _TimelineState extends State<Timeline> {
                           elevation: 10,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
-                          ),
+                          ),  
                           child: ListTile(
                             leading: Image.asset("assets/images/avatar.png", width: 60.0,),
                             title: Column(
@@ -209,126 +211,9 @@ class _TimelineState extends State<Timeline> {
               },
             ),
           ),
-        ])
-        // body: Column(
-        //   crossAxisAlignment: CrossAxisAlignment.start,
-        //   children:  [
-        //     Padding(
-        //       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-        //        child: TextFormField(
-        //           maxLines: 3,
-        //           keyboardType: TextInputType.multiline,
-        //           controller: post,
-        //           decoration:  InputDecoration(
-        //             suffixIcon: IconButton(
-        //                 icon: const Icon(Icons.send),
-        //                 onPressed: () async {
-        //                 submit(
-        //                     post.text, );
-        //               },
-        //                 ),
-        //             hintText: 'What is happening?',
-        //               border: const OutlineInputBorder(
-        //                 borderRadius: BorderRadius.all(Radius.circular(10)),
-        //               )
-        //           ),
-        //           onSaved: (value) {
-        //           setState(() {
-        //             post.text = value!;
-        //           }
-        //         );
-        //       },
-        //     )
-        //   ),
-        //     // Text(
-        //     //   "Stories",
-        //     //   style: TextStyle(
-        //     //       fontSize: 18,
-        //     //       fontWeight: FontWeight.bold,
-        //     //       color: Colors.grey[500]),
-        //     // ),
-        //     // Container(
-        //     //   height: 2,
-        //     //   color: Colors.grey[300],
-        //     //   margin: EdgeInsets.symmetric(horizontal: 30),
-        //     // ),
-        //     Expanded(
-        //       child: ListView(
-        //         padding: const EdgeInsets.only(top: 8),
-        //         children: [
-        //           buildPostSection(
-        //               "https://www.kenyans.co.ke/files/styles/article_style/public/images/news/kenyan-matatu-conductors_0.webp?itok=uIuPLUeU",
-        //               "https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=100&w=940"),
-        //           buildPostSection(
-        //               "https://dailyactive.info/wp-content/uploads/2018/12/DmvhULXW4AAp6nK.jpg",
-        //               "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=100&w=640"),
-        //           buildPostSection(
-        //               "https://miro.medium.com/max/900/0*fQ9XPgNfAXU_XQGh.jpg",
-        //               "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=100&w=640"),
-        //         ],
-        //       ),
-        //     )
-        //   ],
-        // ),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        // floatingActionButton: Container(
-        //   height: 60,
-        //   child: FittedBox(
-        //     child: FloatingActionButton(
-        //       onPressed: () {},
-        //       child: const Icon(
-        //         Icons.add,
-        //       ),
-        //       backgroundColor: Colors.grey[900],
-        //       elevation: 15,
-        //     ),
-        //   ),
-        // ),
-        // bottomNavigationBar: Container(
-        //   decoration: BoxDecoration(
-        //       boxShadow: [
-        //         BoxShadow(
-        //           color: Colors.grey.withOpacity(0.1),
-        //           spreadRadius: 1,
-        //         )
-        //       ],
-        //       color: Colors.grey.withOpacity(0.2),
-        //       borderRadius: BorderRadius.circular(15)),
-        //   child: Row(
-        //     children: [
-        //       buildNavBarItem(Icons.home, 0),
-        //       buildNavBarItem(Icons.search, 1),
-        //       buildNavBarItem(null, -1),
-        //       buildNavBarItem(Icons.notifications, 2),
-        //       buildNavBarItem(Icons.person, 3),
-        //     ],
-        //   ),
-        // ),
+        ])        
         );
   }
-
-  // Widget buildNavBarItem(IconData? icon, int index) {
-  //   return GestureDetector(
-  //     onTap: () {
-  //       setState(() {
-  //         _selectedItemIndex = index;
-  //       });
-  //     },
-  //     child: Container(
-  //       width: MediaQuery.of(context).size.width / 5,
-  //       height: 45,
-  //       child: icon != null
-  //           ? Icon(
-  //               icon,
-  //               size: 25,
-  //               color: index == _selectedItemIndex
-  //                   ? Colors.black
-  //                   : Colors.grey[700],
-  //             )
-  //           : Container(),
-  //     ),
-  //   );
-  // }
 
   Container buildPostSection(String urlPostText) {
     return Container(
@@ -396,62 +281,7 @@ class _TimelineState extends State<Timeline> {
             const SizedBox(
               width: 5,
             ), 
-          //   Column(
-          //     children: [
-          //   Flexible(
-          //   child: StreamBuilder<QuerySnapshot>(
-          //     stream: postdb.collection('posts').snapshots(),
-          //     builder: (context, snapshot) {                
-          //       if (!snapshot.hasData) {
-          //         return const Center(
-          //           child: CircularProgressIndicator(),
-          //         );
-          //       } else {
-          //         return ListView.builder(
-          //             itemCount: snapshot.data!.docs.length,
-          //             itemBuilder: (context, index) {
-          //               DocumentSnapshot document = snapshot.data!.docs[index];
-
-          //               if (document.id == auth.currentUser!.uid) {
-          //                 return Container(height: 0);
-          //               }
-
-          //               return Card(
-          //                 child: ListTile(
-          //                   title: Column(
-          //                       children: [
-          //                         Text(document['useremail'],
-          //                               textAlign: TextAlign.center
-          //                             ),
-          //                       ],
-          //                     ),
-          //                 ),
-          //               );
-          //             });
-          //       }
-          //     },
-          //   ),
-          // ),
-          // ])
-            // Column(
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   children: [
-            //     const Text(
-            //       "user1",
-            //       style: TextStyle(
-            //         fontSize: 18,
-            //         fontWeight: FontWeight.bold,
-            //       ),
-            //     ),
-            //     Text(
-            //       "Kenya",
-            //       style: TextStyle(
-            //           fontSize: 12,
-            //           fontWeight: FontWeight.bold,
-            //           color: Colors.grey[500]),
-            //     ),
-            //   ],
-            // )
+          
           ],
         ),
         const Icon(Icons.more_vert)
@@ -465,13 +295,6 @@ class _TimelineState extends State<Timeline> {
         SizedBox(
           child: Text(urlPostText),
           height: MediaQuery.of(context).size.width - 285,
-
-          // Positioned(
-          //   bottom: 20,
-          //   right: 20,
-          //   child: Icon(Icons.favorite,
-          //       size: 35, color: Colors.white.withOpacity(0.7)),
-          // )
         )
       ],
     );
@@ -537,9 +360,7 @@ class _TimelineState extends State<Timeline> {
     User? user = _auth.currentUser;
     // String? id;
 
-    // UserModel userModel = UserModel();
     PostModel postModel = PostModel();
-    // DriverModel driverModel = DriverModel();
 
     // writing all the values
     postModel.useremail = user!.email;
@@ -550,7 +371,7 @@ class _TimelineState extends State<Timeline> {
     Fluttertoast.showToast(msg: "Post Added :) ");
 
     Navigator.pushAndRemoveUntil((context),
-        MaterialPageRoute(builder: (context) => Timeline()), (route) => false);
+        MaterialPageRoute(builder: (context) => DriverTimeline()), (route) => false);
   }
 
   Future<void> logout(BuildContext context) async {

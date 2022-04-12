@@ -1,3 +1,4 @@
+import 'package:login_signup/driver/driver_login.dart';
 import 'package:login_signup/timeline.dart';
 
 import 'home_feed.dart';
@@ -9,7 +10,7 @@ import 'designs/theme_helper.dart';
 import 'package:flutter/gestures.dart';
 import 'designs/header_widget.dart';
 import 'forgot_password_page.dart';
-import 'admin.dart';
+import 'admin/admin.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -174,6 +175,27 @@ class _LoginScreenState extends State<LoginScreen> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) => AdminLogin()));
+                                      },
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).accentColor),
+                                  ),
+                                ])),
+                              ),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                                //child: Text('Don\'t have an account? Create'),
+                                child: 
+                                Text.rich( TextSpan(
+                                  children: [
+                                  TextSpan(
+                                    text: 'Driver login',
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => DriverLogin()));
                                       },
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,

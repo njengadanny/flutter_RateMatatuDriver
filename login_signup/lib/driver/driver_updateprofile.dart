@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:login_signup/driver/driver_login.dart';
+import 'package:login_signup/models/driver_data.dart';
 import 'package:login_signup/profil.dart';
 import 'package:login_signup/profile2.dart';
-import 'designs/textfield_widget.dart';
-import 'login_screen.dart';
-import 'models/user_data.dart';
+import '../designs/textfield_widget.dart';
+import 'driver_login.dart';
+import '../models/user_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UpdateProfile extends StatefulWidget {
+class DriverUpdateProfile extends StatefulWidget {
   State<StatefulWidget> createState() {
     return _UpdateProfileState();
   }
 }
 
-class _UpdateProfileState extends State<UpdateProfile> {
+class _UpdateProfileState extends State<DriverUpdateProfile> {
   User? user = FirebaseAuth.instance.currentUser;
-  UserModel loggedInUser = UserModel();
+  DriverModel loggedInUser = DriverModel();
   late final updateFname = TextEditingController();
   late final updateSname = TextEditingController();
   late final updateEmail = TextEditingController();
@@ -27,20 +29,16 @@ class _UpdateProfileState extends State<UpdateProfile> {
   void initState() {
     super.initState();
     FirebaseFirestore.instance
-        .collection("users")
+        .collection("drivers")
         .doc(user!.uid)
         .get()
         .then((value) {
-      loggedInUser = UserModel.fromMap(value.data());
+      loggedInUser = DriverModel.fromMap(value.data());
       setState(() {});
     });
   }
 
-  //  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getData()async {
-  //    User user = FirebaseAuth.instance.currentUser!;
-  //    return FirebaseFirestore.instance.collection('posts')
-  //    .where("useremail", isEqualTo: loggedInUser.email).snapshots();
-  // }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +80,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 keyboardType: TextInputType.name,
                 controller: updateFname,
                 decoration: InputDecoration(
-                    hintText: "${loggedInUser.firstName}",
+                    hintText: "${loggedInUser.driverfirstName}",
                     border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     )),
@@ -106,7 +104,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 keyboardType: TextInputType.name,
                 controller: updateSname,
                 decoration: InputDecoration(
-                    hintText: "${loggedInUser.secondName}",
+                    hintText: "${loggedInUser.driversecondName}",
                     border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     )),
@@ -130,7 +128,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 keyboardType: TextInputType.name,
                 controller: updateEmail,
                 decoration: InputDecoration(
-                    hintText: "${loggedInUser.email}",
+                    hintText: "${loggedInUser.driverEmail}",
                     border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     )),
@@ -334,6 +332,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
   Future<void> logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const LoginScreen()));
+        MaterialPageRoute(builder: (context) => const DriverLogin()));
   }
 }

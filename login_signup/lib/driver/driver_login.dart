@@ -1,23 +1,24 @@
-import 'home_feed.dart';
+import 'driver_registration.dart';
+import 'driver_homefeed.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'designs/theme_helper.dart';
+import '../designs/theme_helper.dart';
 import 'package:flutter/gestures.dart';
-import 'designs/header_widget.dart';
-import 'dashboard.dart';
+import '../designs/header_widget.dart';
+import '../forgot_password_page.dart';
 
-class AdminLogin extends StatefulWidget {
-  const AdminLogin({Key? key}) : super(key: key);
+class DriverLogin extends StatefulWidget {
+  const DriverLogin({Key? key}) : super(key: key);
 
   @override
-  _AdminLoginState createState() => _AdminLoginState();
+  _DriverLoginState createState() => _DriverLoginState();
 }
 
-class _AdminLoginState extends State<AdminLogin> {
+class _DriverLoginState extends State<DriverLogin> {
   // form key
   final _formKey = GlobalKey<FormState>();
-  double _headerHeight = 250;
+  final double _headerHeight = 250;
 
   // editing controller
   final TextEditingController emailController = TextEditingController();
@@ -43,8 +44,8 @@ class _AdminLoginState extends State<AdminLogin> {
             ),
             SafeArea(
               child: Container(
-                  padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  margin: EdgeInsets.fromLTRB(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  margin: const EdgeInsets.fromLTRB(
                       20, 10, 20, 10), // This will be the login form
                   child: Column(
                     children: [
@@ -54,7 +55,7 @@ class _AdminLoginState extends State<AdminLogin> {
                             fontSize: 50, fontWeight: FontWeight.bold),
                       ),
                       const Text(
-                        'Admin Login',
+                        'Driver Login',
                         style: TextStyle(color: Colors.grey),
                       ),
                       const SizedBox(height: 10.0),
@@ -114,6 +115,27 @@ class _AdminLoginState extends State<AdminLogin> {
                               ),
                               const SizedBox(height: 10.0),
                               Container(
+                                margin:
+                                    const EdgeInsets.fromLTRB(10, 0, 10, 20),
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ForgotPasswordPage()),
+                                    );
+                                  },
+                                  child: const Text(
+                                    "Forgot your password?",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
                                 decoration:
                                     ThemeHelper().buttonBoxDecoration(context),
                                 child: ElevatedButton(
@@ -134,6 +156,28 @@ class _AdminLoginState extends State<AdminLogin> {
                                         passwordController.text);
                                   },
                                 ),
+                              ),                              
+                              Container(
+                                margin: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+                                //child: Text('Don\'t have an account? Create'),
+                                child: Text.rich(TextSpan(children: [
+                                  const TextSpan(
+                                      text: "Don't have an account? "),
+                                  TextSpan(
+                                    text: 'Create',
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const DriverRegistration()));
+                                      },
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).accentColor),
+                                  ),
+                                ])),
                               ),
                             ],
                           )),
@@ -146,16 +190,16 @@ class _AdminLoginState extends State<AdminLogin> {
     );
   }
 
-  // signin function
+  // login function
   void signIn(String email, String password) async {
     if (_formKey.currentState!.validate()) {
       try {
         await _auth
             .signInWithEmailAndPassword(email: email, password: password)
             .then((uid) => {
-                  Fluttertoast.showToast(msg: "Admin Login Successful"),
+                  Fluttertoast.showToast(msg: "Login Successful"),
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => Dashboard())),
+                      MaterialPageRoute(builder: (context) => const DriverHomeFeed())),
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {

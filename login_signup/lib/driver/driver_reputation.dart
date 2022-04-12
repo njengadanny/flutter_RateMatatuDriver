@@ -2,29 +2,30 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'models/user_data.dart';
+import 'package:login_signup/models/driver_data.dart';
+import '../models/driver_rating.dart';
 
-class RateHistory extends StatefulWidget {
+class DriverReputation extends StatefulWidget {
   State<StatefulWidget> createState() {
-    return _RateHistoryState();
+    return _DriverReputationState();
   }
 }
 
-class _RateHistoryState extends State<RateHistory> {
+class _DriverReputationState extends State<DriverReputation> {
   User? user = FirebaseAuth.instance.currentUser;
-  UserModel loggedInUser = UserModel();
-  final historydb = FirebaseFirestore.instance;
+  DriverModel loggedInUser = DriverModel();
+  final reputationdb = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   void initState() {
     super.initState();
     FirebaseFirestore.instance
-        .collection("users")
+        .collection("drivers")
         .doc(user!.uid)
         .get()
         .then((value) {
-      loggedInUser = UserModel.fromMap(value.data());
+      loggedInUser = DriverModel.fromMap(value.data());
       setState(() {});
     });
   }
@@ -35,7 +36,7 @@ class _RateHistoryState extends State<RateHistory> {
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
         title: const Text(
-          'Rating History',
+          'Reputation Score',
           style: TextStyle(
             color: Colors.black,
           ),
@@ -52,9 +53,9 @@ class _RateHistoryState extends State<RateHistory> {
       
       
       body: StreamBuilder<QuerySnapshot>(
-        stream: historydb
-            .collection('ratings')
-            .where('useremail', isEqualTo: "${loggedInUser.email}")
+        stream: reputationdb
+            .collection('driver_ratings')
+            .where('driverID', isEqualTo: loggedInUser.driverID)
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -82,25 +83,22 @@ class _RateHistoryState extends State<RateHistory> {
                   ),
                   child: ListTile(
                     leading: Image.asset(
-                      "assets/images/matatu_splash0.png",
+                      "assets/images/driveravatar.png",
                       width: 60.0,
                     ),
                     title: Column(
                       children: [
-                        Text("Driver Rated: " + document['driverID'],
+                        Text("Email: " "${loggedInUser.driverEmail}",
                             textAlign: TextAlign.center,
                             style: const TextStyle(height: 1.5)),
-                        Text("Rating Given: " + document['starRating'],
+                        Text("Driver ID: " + document['driverID'],
                             textAlign: TextAlign.center,
                             style: const TextStyle(height: 1.5)),
-                        Text("Route Taken: " + document['route'],
+                        Text("Average Rating: " + document['avgRating'],
                             textAlign: TextAlign.center,
                             style: const TextStyle(height: 1.5)),
                       ],
                     ),
-                    subtitle: Text(document['dateTime'].toDate().toString(),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(height: 1.5)),
                   ),
                 );
               });

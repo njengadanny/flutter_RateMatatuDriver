@@ -3,7 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'home_feed.dart';
 import 'timeline.dart';
-import 'models/driver_data.dart';
+import 'models/driver_rating.dart';
 import 'models/user_data.dart';
 import 'models/rating_data.dart';
 import 'designs/theme_helper.dart';
@@ -22,9 +22,20 @@ class _RatingPageState extends State<RatingPage> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
   final comment = TextEditingController();
-  final driverID = TextEditingController();
+  late var driverID = TextEditingController();
   final _auth = FirebaseAuth.instance;
+  final ratedb = FirebaseFirestore.instance;
   String? errorMessage;
+  late String searchKey;
+  late Stream streamQuery;
+  final List<String> routes = [
+    'Nairobi -> Nyeri',
+    'Nyeri -> Nairobi',
+    'Nakuru -> Nairobi',
+    'Nairobi -> Nakuru'
+  ];
+
+   String? _currentRoute;
 
   // @override
   // void initState() {
@@ -66,9 +77,28 @@ class _RatingPageState extends State<RatingPage> {
                       'Enter Driver ID: ', 'Enter driver ID'),
                   keyboardType: TextInputType.text,
                   onSaved: (value) {
-                    driverID.text = value!;
+                    setState(() {
+                      driverID = value as TextEditingController;
+                      streamQuery = ratedb
+                          .collection('drivers')
+                          .where('driverID', isGreaterThanOrEqualTo: searchKey)
+                          .where('driverID', isLessThan: searchKey + 'z')
+                          .snapshots();
+                    });
                   },
                 ),
+                const SizedBox(height: 25),
+                DropdownButtonFormField(
+                  value: _currentRoute ?? 'Nairobi -> Nyeri',
+                    items: routes.map((route) {
+                      return DropdownMenuItem(
+                        value: route,
+                        child: Text('$route route'),
+                      );
+                    }).toList(),
+                    onChanged: (val) =>
+                        setState(() => _currentRoute = val as String)
+                  ),
                 const Text(
                   'How was your trip?',
                   style: TextStyle(fontSize: 24),
@@ -81,14 +111,14 @@ class _RatingPageState extends State<RatingPage> {
                     allowHalfRating: true,
                     itemCount: 5,
                     ratingWidget: RatingWidget(
-                        full: const Icon(Icons.star, color: Colors.orange),
+                        full: const Icon(Icons.star, color: Colors.blue),
                         half: const Icon(
                           Icons.star_half,
-                          color: Colors.orange,
+                          color: Colors.lightBlue,
                         ),
                         empty: const Icon(
                           Icons.star_outline,
-                          color: Colors.orange,
+                          color: Colors.blue,
                         )),
                     onRatingUpdate: (value) {
                       setState(() {
@@ -99,13 +129,13 @@ class _RatingPageState extends State<RatingPage> {
                 // Display the rate in number
                 Container(
                   width: 150,
-                  height: 150,
+                  height: 100,
                   // decoration: const BoxDecoration(
                   //     color: Colors.red, shape: BoxShape.circle),
                   alignment: Alignment.center,
                   child: Text(
                     _ratingValue != null ? _ratingValue.toString() : 'Rate it!',
-                    style: const TextStyle(color: Colors.black, fontSize: 30),
+                    style: const TextStyle(color: Colors.black, fontSize: 14),
                   ),
                 ),
                 // const SizedBox(height: 20.0),
@@ -119,7 +149,7 @@ class _RatingPageState extends State<RatingPage> {
                     comment.text = value!;
                   },
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 25),
                 Container(
                   decoration: ThemeHelper().buttonBoxDecoration(context),
                   child: ElevatedButton(
@@ -138,6 +168,7 @@ class _RatingPageState extends State<RatingPage> {
                     onPressed: () async {
                       submit(
                           comment.text, driverID.text, _ratingValue.toString());
+                      // edit();
                     },
                   ),
                 ),
@@ -162,7 +193,7 @@ class _RatingPageState extends State<RatingPage> {
 
     // UserModel userModel = UserModel();
     RatingModel ratingModel = RatingModel();
-    // DriverModel driverModel = DriverModel();
+    DriverRatingModel driverratingModel = DriverRatingModel();
 
     // writing all the values
     ratingModel.useremail = user!.email;
@@ -170,6 +201,9 @@ class _RatingPageState extends State<RatingPage> {
     ratingModel.comment = comment.text;
     ratingModel.starRating = _ratingValue.toString();
     ratingModel.driverID = driverID.text;
+    ratingModel.route = _currentRoute;
+    driverratingModel.driverID = driverID.text;
+    driverratingModel.avgRating = _ratingValue.toString();
 
     await firebaseFirestore
         .collection("ratings")
@@ -177,7 +211,13 @@ class _RatingPageState extends State<RatingPage> {
         .set(ratingModel.toMap());
     Fluttertoast.showToast(msg: "Rating Submitted :) ");
 
+    await firebaseFirestore
+        // .collection("ratings")
+        .collection("driver_ratings")
+        .doc()
+        .set(driverratingModel.toMap());
+
     Navigator.pushAndRemoveUntil((context),
-        MaterialPageRoute(builder: (context) => Timeline()), (route) => false);
+        MaterialPageRoute(builder: (context) => HomeFeed()), (route) => false);
   }
 }

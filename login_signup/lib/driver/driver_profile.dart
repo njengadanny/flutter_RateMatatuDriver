@@ -5,20 +5,21 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_signup/profil.dart';
-import 'login_screen.dart';
-import 'models/user_data.dart';
-import 'update_profile.dart';
+import 'driver_login.dart';
+import '../models/driver_data.dart';
+import '../update_profile.dart';
+import 'driver_updateprofile.dart';
 
 
-class ProfilePage extends StatefulWidget {
+class DriverProfilePage extends StatefulWidget {
    State<StatefulWidget> createState() {
-    return _ProfilePageState();
+    return _DriverProfilePageState();
   }
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _DriverProfilePageState extends State<DriverProfilePage> {
   User? user = FirebaseAuth.instance.currentUser;
-  UserModel loggedInUser = UserModel();
+  DriverModel loggedInUser = DriverModel();
   final postdb = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -26,11 +27,11 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     FirebaseFirestore.instance
-        .collection("users")
+        .collection("drivers")
         .doc(user!.uid)
         .get()
         .then((value) {
-      loggedInUser = UserModel.fromMap(value.data());
+      loggedInUser = DriverModel.fromMap(value.data());
       setState(() {});
     });
   }
@@ -61,61 +62,13 @@ class _ProfilePageState extends State<ProfilePage> {
       floatingActionButton:
       FloatingActionButton(child: const Icon(Icons.edit), onPressed: () { 
         Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => UpdateProfile()));
+                      MaterialPageRoute(builder: (context) => DriverUpdateProfile()));
       }),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       backgroundColor: Colors.white,
 
       body: Column(
-        children: [
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     Padding(
-          //       padding: const EdgeInsets.only(left: 22.0),
-          //       child: Text(
-          //         'Profile Details',
-          //         style: GoogleFonts.lato(
-          //             color: Colors.grey[800],
-          //             fontSize: 26,
-          //             letterSpacing: 0,
-          //             fontWeight: FontWeight.bold),
-          //       ),
-          //     ),
-          //     Padding(
-          //       padding: const EdgeInsets.only(right: 15.0),
-          //       child: Container(
-          //         decoration: const BoxDecoration(
-          //             color: Colors.blue,
-          //             borderRadius: BorderRadius.all(Radius.circular(40))),
-          //         child: Padding(
-          //           padding: const EdgeInsets.only(
-          //               left: 13, right: 20, top: 10, bottom: 10),
-          //           child: Row(
-          //             children: [
-          //               const Icon(
-          //                 Icons.logout_rounded,
-          //                 color: Colors.white,
-          //                 size: 16,
-          //               ),
-          //               const SizedBox(
-          //                 width: 3,
-          //               ),
-          //               Text(
-          //                 'Log Out',
-          //                 style: GoogleFonts.lato(
-          //                     color: Colors.white,
-          //                     fontSize: 15,
-          //                     letterSpacing: 0,
-          //                     fontWeight: FontWeight.normal),
-          //               ),
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
+        children: [          
           Center(
             child: Container(
               decoration: const BoxDecoration(color: Colors.white),
@@ -173,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Padding(
                 padding: const EdgeInsets.only(left: 37.0),
                 child: Text(
-                  "${loggedInUser.firstName}",
+                  "${loggedInUser.driverfirstName}",
                   style: GoogleFonts.lato(
                       color: Colors.grey[600],
                       fontSize: 14,
@@ -202,7 +155,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Padding(
                 padding: const EdgeInsets.only(left: 37.0),
                 child: Text(
-                  '${loggedInUser.secondName}',
+                  '${loggedInUser.driversecondName}',
                   style: GoogleFonts.lato(
                       color: Colors.grey[600],
                       fontSize: 14,
@@ -212,94 +165,35 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ],
           ),
-          // const SizedBox(
-          //   height: 30,
-          // ),
-          // Row(
-          //   children: [
-          //     Padding(
-          //       padding: const EdgeInsets.only(left: 24.0),
-          //       child: Text(
-          //         'Email ',
-          //         style: GoogleFonts.lato(
-          //             color: Colors.grey[900],
-          //             fontSize: 16,
-          //             letterSpacing: 0,
-          //             fontWeight: FontWeight.bold),
-          //       ),
-          //     ),
-          //     Padding(
-          //       padding: const EdgeInsets.only(left: 14.0),
-          //       child: Text(
-          //         '${loggedInUser.email}',
-          //         style: GoogleFonts.lato(
-          //             color: Colors.grey[600],
-          //             fontSize: 14,
-          //             letterSpacing: 1,
-          //             fontWeight: FontWeight.normal),
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          // const SizedBox(
-          //   height: 30,
-          // ),
-          // Row(
-          //   children: [
-          //     Padding(
-          //       padding: const EdgeInsets.only(left: 24.0),
-          //       child: Text(
-          //         'Location ',
-          //         style: GoogleFonts.lato(
-          //             color: Colors.grey[900],
-          //             fontSize: 16,
-          //             letterSpacing: 0,
-          //             fontWeight: FontWeight.bold),
-          //       ),
-          //     ),
-          //     Padding(
-          //       padding: const EdgeInsets.only(left: 14.0),
-          //       child: Text(
-          //         '  Delhi, India',
-          //         style: GoogleFonts.lato(
-          //             color: Colors.grey[600],
-          //             fontSize: 14,
-          //             letterSpacing: 1,
-          //             fontWeight: FontWeight.normal),
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          // const SizedBox(
-          //   height: 20,
-          // ),
-          // const Padding(
-          //   padding: EdgeInsets.symmetric(horizontal: 22.0),
-          //   child: Divider(),
-          // ),
-          // const SizedBox(
-          //   height: 30,
-          // ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.start,
-          //   children: [
-          //     const Padding(
-          //       padding: EdgeInsets.only(left: 24.0),
-          //       child: Icon(Icons.person),
-          //     ),
-          //     Padding(
-          //       padding: const EdgeInsets.only(left: 8.0),
-          //       child: Text(
-          //         'Private Information',
-          //         style: GoogleFonts.lato(
-          //             color: Colors.grey[700],
-          //             fontSize: 17,
-          //             letterSpacing: 0.5,
-          //             fontWeight: FontWeight.bold),
-          //       ),
-          //     ),
-          //   ],
-          // ),
+          const SizedBox(
+            height: 30,
+          ),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 24.0),
+                child: Text(
+                  'Your ID',
+                  style: GoogleFonts.lato(
+                      color: Colors.grey[900],
+                      fontSize: 16,
+                      letterSpacing: 0,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 37.0),
+                child: Text(
+                  '${loggedInUser.driverID}',
+                  style: GoogleFonts.lato(
+                      color: Colors.grey[600],
+                      fontSize: 14,
+                      letterSpacing: 1,
+                      fontWeight: FontWeight.normal),
+                ),
+              ),
+            ],
+          ),
           const SizedBox(
             height: 40,
           ),
@@ -313,7 +207,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Text(
-                  '${loggedInUser.email}',
+                  '${loggedInUser.driverEmail}',
                   style: GoogleFonts.lato(
                       color: Colors.grey[700],
                       fontSize: 14,
@@ -325,56 +219,13 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           const SizedBox(
             height: 20,
-          ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.start,
-          //   children: [
-          //     Padding(
-          //       padding: const EdgeInsets.only(left: 54.0),
-          //       child: Icon(Icons.phone, color: Colors.grey[500]),
-          //     ),
-          //     Padding(
-          //       padding: const EdgeInsets.only(left: 8.0),
-          //       child: Text(
-          //         '+91 - 9560419114',
-          //         style: GoogleFonts.lato(
-          //             color: Colors.grey[700],
-          //             fontSize: 14,
-          //             letterSpacing: 1,
-          //             fontWeight: FontWeight.normal),
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          // const SizedBox(
-          //   height: 20,
-          // ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.start,
-          //   children: [
-          //     Padding(
-          //       padding: const EdgeInsets.only(left: 54.0),
-          //       child: Icon(Icons.home_outlined, color: Colors.grey[500]),
-          //     ),
-          //     Padding(
-          //       padding: const EdgeInsets.only(left: 8.0),
-          //       child: Text(
-          //         'RZ- 5167, Hari Nagar, New Delhi',
-          //         style: GoogleFonts.lato(
-          //             color: Colors.grey[700],
-          //             fontSize: 14,
-          //             letterSpacing: 1,
-          //             fontWeight: FontWeight.normal),
-          //       ),
-          //     ),
-          //   ],
-          // ),
+          ),          
           Flexible(
             child: StreamBuilder<QuerySnapshot>(
               stream: postdb.collection('posts')
               // .orderBy('dateTime', descending: false)
               .where('useremail',
-              isEqualTo: "${loggedInUser.email}")
+              isEqualTo: "${loggedInUser.driverEmail}")
               .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
@@ -566,6 +417,6 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const LoginScreen()));
+        MaterialPageRoute(builder: (context) => const DriverLogin()));
   }
 }

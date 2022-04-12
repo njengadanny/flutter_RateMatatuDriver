@@ -4,13 +4,15 @@ class RatingModel {
   String? starRating;
   String? comment;
   String? driverID;
+  String? route;
 
   RatingModel(
       {this.dateTime,
       this.useremail,
       this.starRating,
       this.comment,
-      this.driverID});
+      this.driverID,
+      this.route});
 
   // receiving data from server
   factory RatingModel.fromMap(map) {
@@ -20,6 +22,7 @@ class RatingModel {
       starRating: map['starRating'],
       comment: map['comment'],
       driverID: map['driverID'],
+      route: map['route'],
     );
   }
 
@@ -31,6 +34,7 @@ class RatingModel {
       'starRating': starRating,
       'comment': comment,
       'driverID': driverID,
+      'route': route,
     };
   }
 }
